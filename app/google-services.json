@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833904705701",
+    "project_id": "assesmentproject-bad8e",
+    "storage_bucket": "assesmentproject-bad8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833904705701:android:6fb3510ec7acf364e30d4c",
+        "android_client_info": {
+          "package_name": "com.rafiur.assesmentproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsrHweNzLXNc6ZK2oSGSBB9KHeDL5ZV4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

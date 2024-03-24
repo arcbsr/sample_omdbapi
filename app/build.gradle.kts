@@ -22,8 +22,6 @@ android {
             useSupportLibrary = true
         }
         buildConfigField("String", "API_KEY", "\"${project.property("apikey")}\"")
-
-//        buildConfigField("String", "API_URL", "\"https://cube-academy-api.cubeapis.com/\"")
         buildConfigField("String", "API_URL", "\"https://www.omdbapi.com/\"")
         //https://www.omdbapi.com/?i=tt3896198&apikey=666da4ed
     }
@@ -94,12 +92,13 @@ dependencies {
     kaptTest("com.google.dagger:hilt-android-compiler:2.48")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
 
-    implementation ("io.coil-kt:coil-compose:1.4.0")
+    implementation ("io.coil-kt:coil-compose:2.4.0")
 
 
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-auth")
     //
 
     val lifecycle_version = "2.7.0"
@@ -141,26 +140,6 @@ dependencies {
 
     implementation("androidx.compose.material:material:1.6.4")
     implementation("androidx.compose.ui:ui:1.6.4")
-
-//    val paging_version = "3.2.1"
-//
-//    implementation("androidx.paging:paging-runtime:$paging_version")
-//
-//    // alternatively - without Android dependencies for tests
-//    testImplementation("androidx.paging:paging-common:$paging_version")
-//
-//    // optional - RxJava2 support
-//    implementation("androidx.paging:paging-rxjava2:$paging_version")
-//
-//    // optional - RxJava3 support
-//    implementation("androidx.paging:paging-rxjava3:$paging_version")
-//
-//    // optional - Guava ListenableFuture support
-//    implementation("androidx.paging:paging-guava:$paging_version")
-//
-//    // optional - Jetpack Compose integration
-//    implementation("androidx.paging:paging-compose:3.3.0-alpha05")
-
 }
 // Allow references to generated code
 kapt {
