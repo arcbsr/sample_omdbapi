@@ -12,6 +12,7 @@ interface ApiService {
         @Query("s") searchQuery: String,
         @Query("page") page: Int = 1,
         @Query("y") year: String = "2000",
+        @Query("type") type: String = "movie",
         @Query("apikey") apiKey: String = BuildConfig.API_KEY
     ): SearchResponseData
 

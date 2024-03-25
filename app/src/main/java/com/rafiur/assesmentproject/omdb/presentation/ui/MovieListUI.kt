@@ -1,7 +1,5 @@
 package com.rafiur.assesmentproject.omdb.presentation.ui
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -27,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +37,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.rafiur.assesmentproject.omdb.domain.models.Movie
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieListViewModel
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieState
@@ -46,6 +53,39 @@ import com.rafiur.assesmentproject.utils.SortMenu
 import com.rafiur.assesmentproject.utils.SortOption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+
+@Composable
+fun MovieListUI() {
+    val viewModel: MovieListViewModel = viewModel()
+    viewModel.fetchMovieList()
+    val viewState by viewModel.mState.collectAsState()
+    val scrollState = rememberLazyListState()
+    val isItemReachEndScroll by remember {
+        derivedStateOf() {
+            scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ==
+                    scrollState.layoutInfo.totalItemsCount - 1
+        }
+    }
+    // Display the TopBar and MovieList composables in a Column
+    Column {
+        TopAppBar(
+            title = {
+
+                androidx.compose.material.Text(
+                    text = "MOVIES",
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+
+                )
+
+            },
+        )
+        MovieListNorm(viewModel, viewState, scrollState, isItemReachEndScroll)
+
+    }
+}
 
 @Composable
 fun MovieListNorm(
@@ -132,11 +172,12 @@ fun MovieListItem(movie: Movie, itemIndex: Int) {
             painter = rememberAsyncImagePainter(movie.poster),
             contentDescription = null,
             modifier = Modifier.size(72.dp),
-            contentScale = ContentScale.Crop
-        )
+            contentScale = ContentScale.Crop,
+
+            )
         Spacer(modifier = Modifier.width(16.dp))
         Column {
-            Text(text = itemIndex.toString() + "/" + movie.pageNumber.toString() + "/" + movie.title)
+            Text(text = movie.title)
             Text(text = movie.year)
             Text(text = movie.type)
         }
