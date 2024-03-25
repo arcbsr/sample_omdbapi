@@ -17,7 +17,7 @@
         android:theme="@style/Theme.AssesmentProject"
         tools:targetApi="31">
         <activity
-            android:name=".omdb.presentation.activity.MainActivity"
+            android:name=".omdb.presentation.activity.MovieListActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AssesmentProject">

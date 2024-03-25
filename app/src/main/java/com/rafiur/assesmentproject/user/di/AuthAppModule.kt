@@ -1,7 +1,7 @@
 package com.rafiur.assesmentproject.user.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.rafiur.assesmentproject.user.data.repositoryimpl.FirebaseAuthRepository
+import com.rafiur.assesmentproject.user.data.repository.FirebaseAuthRepository
 import com.rafiur.assesmentproject.user.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides

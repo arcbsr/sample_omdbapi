@@ -17,13 +17,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,12 +32,10 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,27 +43,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
 import com.rafiur.assesmentproject.omdb.domain.models.Movie
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieListViewModel
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieState
 import com.rafiur.assesmentproject.utils.SortMenu
 import com.rafiur.assesmentproject.utils.SortOption
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 @Composable
-fun MovieListUI() {
-    val viewModel: MovieListViewModel = viewModel()
-    viewModel.fetchMovieList()
-    val viewState by viewModel.mState.collectAsState()
+fun MovieListUI(movieViewModel: MovieListViewModel) {
+    movieViewModel.fetchMovieList()
+    val viewState by movieViewModel.mState.collectAsState()
     val scrollState = rememberLazyListState()
     val isItemReachEndScroll by remember {
         derivedStateOf() {
-            scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ==
-                    scrollState.layoutInfo.totalItemsCount - 1
+            scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == scrollState.layoutInfo.totalItemsCount - 1
         }
     }
     // Display the TopBar and MovieList composables in a Column
@@ -82,7 +75,9 @@ fun MovieListUI() {
 
             },
         )
-        MovieListNorm(viewModel, viewState, scrollState, isItemReachEndScroll)
+
+        MovieListNorm(movieViewModel, viewState, scrollState, isItemReachEndScroll)
+
 
     }
 }
@@ -100,14 +95,26 @@ fun MovieListNorm(
         modifier = Modifier.fillMaxSize()
     ) {
         if (isLoading) {
-            LoadingDialog(
-                onDismiss = { isLoading = false }
-            )
+            LoadingDialog(onDismiss = { isLoading = false })
         }
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(state = scrollState) {
             items(viewModel.movies.value) { item ->
-                MovieListItem(movie = item, 0)
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    shape = RoundedCornerShape(8.dp),
+
+                    ) {
+                    MovieListItem(movie = item, 0)
+                }
             }
         }
 
@@ -122,8 +129,7 @@ fun MovieListNorm(
             Box(modifier = Modifier.fillMaxSize()) {
 
                 LaunchedEffect(key1 = isItemReachEndScroll, block = {
-                    if (isItemReachEndScroll)
-                        viewModel.fetchMovieList()
+                    if (isItemReachEndScroll) viewModel.fetchMovieList()
                 })
 
             }
@@ -140,15 +146,11 @@ fun MovieListNorm(
 
 @Composable
 fun TopBar(
-    title: String,
-    onSortSelected: (SortOption) -> Unit
+    title: String, onSortSelected: (SortOption) -> Unit
 ) {
-    TopAppBar(
-        title = { Text(text = title) },
-        actions = {
-            SortMenu(onSortSelected = onSortSelected)
-        }
-    )
+    TopAppBar(title = { Text(text = title) }, actions = {
+        SortMenu(onSortSelected = onSortSelected)
+    })
 }
 
 @Composable
@@ -159,15 +161,13 @@ fun MovieListItem(movie: Movie, itemIndex: Int) {
             showDetail = false
         }
     }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clickable {
-                // Show detail for movie...
-                showDetail = true
-            }
-    ) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clickable {
+            // Show detail for movie...
+            showDetail = true
+        }) {
         Image(
             painter = rememberAsyncImagePainter(movie.poster),
             contentDescription = null,
@@ -186,16 +186,11 @@ fun MovieListItem(movie: Movie, itemIndex: Int) {
 
 @Composable
 fun LoadingDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = "Loading...") },
-        buttons = {
-            Row(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(text = "Loading...") }, buttons = {
+        Row(
+            modifier = Modifier.padding(8.dp), horizontalArrangement = Arrangement.Center
+        ) {
 
-            }
         }
-    )
+    })
 }

@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface Repository {
-    // TODO: Add additional code if you need it
 
-    suspend fun getAllMovieFromOther(
+    suspend fun getAllMovieFromAPI(
         searchQuery: String,
         page: Int,
         year: String = "2000"

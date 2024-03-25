@@ -16,7 +16,7 @@ class DataSource @Inject constructor(
     private val apiService: ApiService, @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun getMoviesTest(
+    suspend fun getMoviesFromAPI(
         searchQuery: String,
         page: Int,
         year: String = "2000"

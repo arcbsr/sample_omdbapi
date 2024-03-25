@@ -16,7 +16,7 @@ class UseCase @Inject constructor(private val repository: Repository) {
         page: Int,
         year: String = "2000"
     ): Flow<ResponseWrapper<SearchResponseData>> {
-        return repository.getAllMovieFromOther(searchQuery, page, year).map {
+        return repository.getAllMovieFromAPI(searchQuery, page, year).map {
             when (it) {
                 is ResponseWrapper.GenericError -> {
                     ResponseWrapper.GenericError(it.code, it.error)

@@ -1,4 +1,4 @@
-package com.rafiur.assesmentproject.user.data.repositoryimpl
+package com.rafiur.assesmentproject.user.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.rafiur.assesmentproject.user.domain.repository.AuthRepository

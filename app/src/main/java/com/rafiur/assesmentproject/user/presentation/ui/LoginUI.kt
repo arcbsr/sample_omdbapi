@@ -2,7 +2,6 @@ package com.rafiur.assesmentproject.user.presentation.ui
 
 import android.content.Intent
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
@@ -42,9 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.rafiur.assesmentproject.omdb.presentation.activity.MainActivity
-import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieListViewModel
+import com.rafiur.assesmentproject.omdb.presentation.activity.MovieListActivity
 import com.rafiur.assesmentproject.user.presentation.viewmodels.AuthState
 import com.rafiur.assesmentproject.user.presentation.viewmodels.AuthViewModel
 
@@ -181,17 +178,6 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-//                if (canAuthenticateWithBiometrics) {
-//                    BiometricButton(
-//                        onClick = {
-//                            authenticateWithBiometric(context)
-//                        },
-//                        text = "Authenticate with Biometric",
-//                    )
-//                } else {
-//                    Text(text = "Biometric authentication is not available on this device.")
-//                }
-
             }
         }
     }
@@ -207,6 +193,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                         isLoading = false
                         isError = true
                         errorMsg = "Error in biometric verify"
+                        gotoMovieListScreen(context)
 
                     }
 
@@ -249,7 +236,7 @@ fun BiometricButton(
 
 
 private fun gotoMovieListScreen(context: FragmentActivity) {
-    val intent = Intent(context, MainActivity::class.java)
+    val intent = Intent(context, MovieListActivity::class.java)
     context.startActivity(intent)
     context.finish()
 }

@@ -22,11 +22,7 @@ class LoginActivity : AppCompatActivity() {
 
         setContent {
             AssesmentProjectTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    LoginUI(authViewModel = authViewModel)
-                }
+                LoginUI(authViewModel = authViewModel)
             }
         }
     }

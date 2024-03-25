@@ -11,13 +11,13 @@ import javax.inject.Inject
 
 
 class RepositoryImpl @Inject constructor(private val remoteDataSource: DataSource) : Repository {
-    override suspend fun getAllMovieFromOther(
+    override suspend fun getAllMovieFromAPI(
         searchQuery: String,
         page: Int,
         year: String
     ): Flow<ResponseWrapper<SearchResponseData>> {
         return flow {
-            emit(remoteDataSource.getMoviesTest(searchQuery, page, year = year))
+            emit(remoteDataSource.getMoviesFromAPI(searchQuery, page, year = year))
         }
     }
 
