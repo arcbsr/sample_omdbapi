@@ -19,11 +19,15 @@ import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,9 +88,9 @@ fun LoginUI(authViewModel: AuthViewModel) {
 
 @Composable
 fun LoginPanel(authViewModel: AuthViewModel) {
-    var email by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("re@gmail.com") }
     var errorMsg by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("123456") }
     var isLoading by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
 
@@ -113,6 +118,8 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                     value = email,
                     onValueChange = { email = it },
                     label = { Text("Email") },
+                    singleLine = true,
+                    maxLines = 1,
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     textStyle = TextStyle(fontSize = 18.sp)
@@ -122,6 +129,9 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("Password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true,
+                    maxLines = 1,
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     textStyle = TextStyle(fontSize = 18.sp)
@@ -194,10 +204,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                         isError = true
                         errorMsg = "Error in biometric verify"
                         gotoMovieListScreen(context)
-
                     }
-
-
                 }
 
                 is AuthState.Unauthenticated -> {

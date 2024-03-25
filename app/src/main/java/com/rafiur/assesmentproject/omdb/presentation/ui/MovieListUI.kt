@@ -53,14 +53,6 @@ import com.rafiur.assesmentproject.utils.SortOption
 @Composable
 fun MovieListUI(movieViewModel: MovieListViewModel) {
     movieViewModel.fetchMovieList()
-    val viewState by movieViewModel.mState.collectAsState()
-    val scrollState = rememberLazyListState()
-    val isItemReachEndScroll by remember {
-        derivedStateOf() {
-            scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == scrollState.layoutInfo.totalItemsCount - 1
-        }
-    }
-    // Display the TopBar and MovieList composables in a Column
     Column {
         TopAppBar(
             title = {
@@ -76,7 +68,7 @@ fun MovieListUI(movieViewModel: MovieListViewModel) {
             },
         )
 
-        MovieListNorm(movieViewModel, viewState, scrollState, isItemReachEndScroll)
+        MovieListNorm(movieViewModel)
 
 
     }
@@ -85,12 +77,16 @@ fun MovieListUI(movieViewModel: MovieListViewModel) {
 @Composable
 fun MovieListNorm(
     viewModel: MovieListViewModel,
-    viewState: MovieState,
-    scrollState: LazyListState,
-    isItemReachEndScroll: Boolean
 ) {
+    val viewState by viewModel.mState.collectAsState()
     var isLoading by remember { mutableStateOf(false) }
-
+    var isEndOfSearch by remember { mutableStateOf(false) }
+    val scrollState = rememberLazyListState()
+    val isItemReachEndScroll by remember {
+        derivedStateOf() {
+            scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == scrollState.layoutInfo.totalItemsCount - 1
+        }
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -119,27 +115,32 @@ fun MovieListNorm(
         }
 
     }
+
     when (viewState) {
         is MovieState.Loading -> {
             isLoading = true
         }
 
         is MovieState.Success -> {
-            isLoading = false
             Box(modifier = Modifier.fillMaxSize()) {
 
                 LaunchedEffect(key1 = isItemReachEndScroll, block = {
-                    if (isItemReachEndScroll) viewModel.fetchMovieList()
+                    if (!isLoading && !isEndOfSearch)
+                        if (isItemReachEndScroll) viewModel.fetchMovieList()
                 })
 
             }
-
+            isLoading = false
         }
 
         is MovieState.Error -> {
             isLoading = false
         }
 
+        MovieState.EndOfSearch -> {
+            isLoading = false
+            isEndOfSearch = true
+        }
     }
 
 }

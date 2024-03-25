@@ -21,71 +21,50 @@ import kotlin.time.ExperimentalTime
 @HiltViewModel
 class MovieListViewModel @Inject constructor(private val useCase: UseCase) : ViewModel() {
 
-    // Coroutine scope for debouncing
-    private val debounceScope = CoroutineScope(Dispatchers.Default)
-
-    // Debounce function to limit the frequency of API calls
-    @OptIn(ExperimentalTime::class)
-    fun fetchMovieListDebounced(
-        delayMillis: Long = 1000,
-        action: () -> Unit
-    ) {
-        debounceScope.launch {
-            delay(delayMillis)
-            action()
-        }
-    }
-
     private val _state = MutableStateFlow<MovieState>(MovieState.Loading)
     val mState: StateFlow<MovieState> = _state
 
     private val _movies: MutableStateFlow<List<Movie>> = MutableStateFlow(emptyList())
     val movies: StateFlow<List<Movie>> get() = _movies
 
-    private val _pageNumber: MutableStateFlow<Int> = MutableStateFlow(0) // Initial page number
-    val pageNumber: StateFlow<Int> get() = _pageNumber
+    private val _year: MutableStateFlow<Int> = MutableStateFlow(2000) // Initial page number
+    val pageNumber: StateFlow<Int> get() = _year
 
-    private val _blockLoading: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
+    private val _blockLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val blockLoading: StateFlow<Boolean> get() = _blockLoading
 
     fun fetchMovieList() {
         if (_blockLoading.value) {
             return
         }
-        fetchMovieListDebounced {
-            _blockLoading.value = false
-        }
         _state.value = MovieState.Loading
         _blockLoading.value = true
         viewModelScope.launch {
-            _pageNumber.value++
-            useCase.getMovies("love", page = _pageNumber.value, "2000").onStart {
-            }.catch {
+            useCase.getMovies("love", page = 1, _year.value.toString()).onStart {}.catch {
                 _state.value = MovieState.Error("Unknown")
             }.collect { it ->
                 when (it) {
                     is ResponseWrapper.GenericError -> {
                         it.error?.let { msg ->
-                            _state.value =
-                                MovieState.Error("${it.code} : $msg")
+                            _state.value = MovieState.Error("${it.code} : $msg")
                         }
+                        _blockLoading.value = false
                     }
 
                     ResponseWrapper.NetworkError -> {
                         _state.value = MovieState.Error("Network Error")
+                        _blockLoading.value = false
                     }
 
                     is ResponseWrapper.Success -> {
-                        delay(500)
+                        delay(600)
                         if (it.value?.search == null || it.value.search.isEmpty()) {
-                            _state.value = MovieState.Success(_movies.value)
+                            _state.value = MovieState.EndOfSearch
                         } else {
-                            for (movie in it.value.search) {
-                                movie.pageNumber = _pageNumber.value
-                            }
+                            _year.value++
                             addNewMovies(it.value.search)
                         }
+                        _blockLoading.value = false
                     }
                 }
             }
@@ -95,8 +74,7 @@ class MovieListViewModel @Inject constructor(private val useCase: UseCase) : Vie
     private fun fetchMovieDetail() {
         viewModelScope.launch {
 
-            useCase.getMovieDetail("tt1570728").onStart {
-            }.catch {
+            useCase.getMovieDetail("tt1570728").onStart {}.catch {
 
             }.collect { it ->
                 when (it) {
@@ -176,6 +154,7 @@ class MovieListViewModel @Inject constructor(private val useCase: UseCase) : Vie
 
 sealed class MovieState {
     object Loading : MovieState()
+    object EndOfSearch : MovieState()
     data class Success(val movies: List<Movie>) : MovieState()
     data class Error(val message: String) : MovieState()
 }

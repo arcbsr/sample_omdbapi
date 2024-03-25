@@ -1,5 +1,6 @@
 package com.rafiur.assesmentproject.user.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rafiur.assesmentproject.user.domain.repository.AuthRepository
@@ -32,11 +33,14 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         _authState.value = AuthState.Loading
         viewModelScope.launch {
             val result = authRepository.signIn(email, password)
-            if (result.isSuccess) {
-                _authState.value = AuthState.Authenticated
-            } else {
-                _authState.value = AuthState.AuthInError("Error in signIn")
-            }
+            result.fold(
+                onSuccess = { value ->
+                    _authState.value = AuthState.Authenticated
+                },
+                onFailure = { exception ->
+                    _authState.value = exception.message?.let { AuthState.AuthInError(it) }!!
+                }
+            )
         }
     }
 
@@ -44,11 +48,14 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         _authState.value = AuthState.Loading
         viewModelScope.launch {
             val result = authRepository.signUp(email, password)
-            if (result.isSuccess) {
-                _authState.value = AuthState.Authenticated
-            } else {
-                _authState.value = AuthState.AuthInError("Error in signUp")
-            }
+            result.fold(
+                onSuccess = { value ->
+                    _authState.value = AuthState.Authenticated
+                },
+                onFailure = { exception ->
+                    _authState.value = exception.message?.let { AuthState.AuthInError(it) }!!
+                }
+            )
         }
     }
 
