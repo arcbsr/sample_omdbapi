@@ -14,16 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,13 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.rafiur.assesmentproject.omdb.domain.models.Movie
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieListViewModel
 import com.rafiur.assesmentproject.omdb.presentation.viewmodel.MovieState
-import com.rafiur.assesmentproject.utils.SortMenu
-import com.rafiur.assesmentproject.utils.SortOption
 
 
 @Composable
@@ -83,7 +77,7 @@ fun MovieListNorm(
     var isEndOfSearch by remember { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
     val isItemReachEndScroll by remember {
-        derivedStateOf() {
+        derivedStateOf {
             scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == scrollState.layoutInfo.totalItemsCount - 1
         }
     }
@@ -109,7 +103,7 @@ fun MovieListNorm(
                     shape = RoundedCornerShape(8.dp),
 
                     ) {
-                    MovieListItem(movie = item, 0)
+                    MovieListItem(movie = item)
                 }
             }
         }
@@ -144,18 +138,8 @@ fun MovieListNorm(
     }
 
 }
-
 @Composable
-fun TopBar(
-    title: String, onSortSelected: (SortOption) -> Unit
-) {
-    TopAppBar(title = { Text(text = title) }, actions = {
-        SortMenu(onSortSelected = onSortSelected)
-    })
-}
-
-@Composable
-fun MovieListItem(movie: Movie, itemIndex: Int) {
+fun MovieListItem(movie: Movie) {
     var showDetail by remember { mutableStateOf(false) }
     if (showDetail) {
         MovieDetailsDialog(movie = movie) {

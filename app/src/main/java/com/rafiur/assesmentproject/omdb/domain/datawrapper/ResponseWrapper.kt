@@ -1,4 +1,4 @@
-package com.rafiur.assesmentproject.omdb.domain
+package com.rafiur.assesmentproject.omdb.domain.datawrapper
 
 sealed class ResponseWrapper<out T> {
     data class Success<out T>(val value: T): ResponseWrapper<T>()

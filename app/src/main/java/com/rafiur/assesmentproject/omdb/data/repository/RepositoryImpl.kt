@@ -1,7 +1,7 @@
 package com.rafiur.assesmentproject.omdb.data.repository
 
 import com.rafiur.assesmentproject.omdb.data.datasource.DataSource
-import com.rafiur.assesmentproject.omdb.domain.ResponseWrapper
+import com.rafiur.assesmentproject.omdb.domain.datawrapper.ResponseWrapper
 import com.rafiur.assesmentproject.omdb.domain.models.MovieDetailsResponse
 import com.rafiur.assesmentproject.omdb.domain.models.SearchResponseData
 import com.rafiur.assesmentproject.omdb.domain.repository.Repository

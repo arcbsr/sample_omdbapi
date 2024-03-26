@@ -1,14 +1,11 @@
 package com.rafiur.assesmentproject.omdb.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rafiur.assesmentproject.omdb.domain.ResponseWrapper
+import com.rafiur.assesmentproject.omdb.domain.datawrapper.ResponseWrapper
 import com.rafiur.assesmentproject.omdb.domain.models.Movie
 import com.rafiur.assesmentproject.omdb.domain.usecase.UseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +13,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(private val useCase: UseCase) : ViewModel() {

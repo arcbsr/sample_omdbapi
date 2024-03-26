@@ -2,7 +2,7 @@ package com.rafiur.assesmentproject.omdb.data.datasource
 
 import com.rafiur.assesmentproject.omdb.data.remote.exception.NoConnectivityException
 import com.cube.cubeacademy.lib.di.IoDispatcher
-import com.rafiur.assesmentproject.omdb.domain.ResponseWrapper
+import com.rafiur.assesmentproject.omdb.domain.datawrapper.ResponseWrapper
 import com.rafiur.assesmentproject.omdb.domain.models.SearchResponseData
 import com.rafiur.assesmentproject.omdb.data.remote.api.ApiService
 import com.rafiur.assesmentproject.omdb.domain.models.MovieDetailsResponse
