@@ -19,15 +19,11 @@ import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
+import com.rafiur.assesmentproject.R
 import com.rafiur.assesmentproject.omdb.presentation.activity.MovieListActivity
 import com.rafiur.assesmentproject.user.presentation.viewmodels.AuthState
 import com.rafiur.assesmentproject.user.presentation.viewmodels.AuthViewModel
@@ -62,7 +60,7 @@ fun LoginUI(authViewModel: AuthViewModel) {
             TopAppBar(
                 title = {
                     Text(
-                        text = "WELCOME",
+                        text = stringResource(id = R.string.welcome),
                         style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -112,12 +110,15 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Login", style = MaterialTheme.typography.h4)
+                Text(
+                    text = stringResource(id = R.string.login),
+                    style = MaterialTheme.typography.h4
+                )
                 Spacer(modifier = Modifier.height(32.dp))
                 TextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(id = R.string.email)) },
                     singleLine = true,
                     maxLines = 1,
                     modifier = Modifier.fillMaxWidth(),
@@ -128,7 +129,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                 TextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text(stringResource(id = R.string.password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     maxLines = 1,
@@ -149,11 +150,11 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                                 authViewModel.signIn(email, password)
                             } else {
                                 isError = true
-                                errorMsg = "Invalid email or password"
+                                errorMsg = context.getString(R.string.invalid_id_pass)
                             }
                         }
                     }, modifier = Modifier.width(150.dp)) {
-                        Text(text = "Login")
+                        Text(text = stringResource(id = R.string.login))
                     }
                     Button(
                         onClick = {
@@ -164,7 +165,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                                     authViewModel.signUp(email, password)
                                 } else {
                                     isError = true
-                                    errorMsg = "Invalid email or password"
+                                    errorMsg = context.getString(R.string.invalid_id_pass)
                                 }
 
                             }
@@ -173,7 +174,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                     ) {
                         Text(
-                            text = "Create New",
+                            text = stringResource(id = R.string.create_new),
                             style = TextStyle(color = Color.White)
                         )
                     }
@@ -202,7 +203,7 @@ fun LoginPanel(authViewModel: AuthViewModel) {
                     } else {
                         isLoading = false
                         isError = true
-                        errorMsg = "Error in biometric verify"
+                        errorMsg = context.getString(R.string.biometric_error)
                         gotoMovieListScreen(context)
                     }
                 }
@@ -268,9 +269,9 @@ fun authenticateWithBiometric(context: FragmentActivity) {
         })
 
     val promptInfo = BiometricPrompt.PromptInfo.Builder()
-        .setTitle("Biometric Authentication")
-        .setDescription("Place your finger the sensor or look at the front camera to authenticate.")
-        .setNegativeButtonText("Cancel")
+        .setTitle(context.getString(R.string.biometric_auth_title))
+        .setDescription(context.getString(R.string.biometric_auth_description))
+        .setNegativeButtonText(context.getString(R.string.btn_cancel))
         .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
         .build()
 

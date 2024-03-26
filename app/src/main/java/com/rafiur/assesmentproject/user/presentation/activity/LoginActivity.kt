@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
-import androidx.compose.ui.Modifier
 import com.rafiur.assesmentproject.ui.theme.AssesmentProjectTheme
 import com.rafiur.assesmentproject.user.presentation.ui.LoginUI
 import com.rafiur.assesmentproject.user.presentation.viewmodels.AuthViewModel

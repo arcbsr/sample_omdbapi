@@ -46,7 +46,7 @@ fun MovieDetailsDialog(
                 Image(
                     painter = painter,
                     contentDescription = "Forest Image",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)

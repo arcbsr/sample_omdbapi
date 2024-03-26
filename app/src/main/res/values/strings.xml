@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">AssesmentProject</string>
+    <string name="biometric_auth_title">Biometric Authentication</string>
+    <string name="biometric_auth_description">Place your finger the sensor or look at the front camera to authenticate.</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="welcome">WELCOME</string>
+    <string name="login">Login</string>
+    <string name="email">Email\n</string>
+    <string name="password">Password</string>
+    <string name="invalid_id_pass">Invalid email or password</string>
+    <string name="create_new">Create New</string>
+    <string name="biometric_error">Error in biometric verify</string>
 </resources>
