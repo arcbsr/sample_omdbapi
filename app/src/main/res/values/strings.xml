@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AssesmentProject</string>
+    <string name="app_name">AssessmentProject</string>
     <string name="biometric_auth_title">Biometric Authentication</string>
     <string name="biometric_auth_description">Place your finger the sensor or look at the front camera to authenticate.</string>
     <string name="btn_cancel">Cancel</string>

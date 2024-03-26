@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rafiur.assesmentproject"
+    namespace = "com.rafiur.assessmentproject"
     compileSdk = 34
 
     defaultConfig {
